@@ -13,7 +13,7 @@ public class StegripeConfig <T> {
         for (var field : configTypeClass.getDeclaredFields()) {
             try {
                 var record = field.get(null);
-                if(record instanceof StegrapeConfigRecord<?> configRecord){
+                if(record instanceof StegripeConfigRecord<?> configRecord){
                     config.addDefault(configRecord.path, configRecord.defaultValue);
                 }
             } catch (IllegalAccessException e) {
@@ -22,7 +22,7 @@ public class StegripeConfig <T> {
         }
     }
 
-    public <V> void set(StegrapeConfigRecord<V> configRecord, Object value) {
+    public <V> void set(StegripeConfigRecord<V> configRecord, Object value) {
         plugin.getConfig().set(configRecord.path, value);
     }
 
@@ -37,7 +37,7 @@ public class StegripeConfig <T> {
         plugin.saveConfig();
     }
 
-    public <V> V get(StegrapeConfigRecord<V> configRecord) {
+    public <V> V get(StegripeConfigRecord<V> configRecord) {
         return (V) plugin.getConfig().get(configRecord.path, configRecord.defaultValue);
     }
 }

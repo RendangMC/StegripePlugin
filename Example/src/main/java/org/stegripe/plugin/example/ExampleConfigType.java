@@ -1,10 +1,9 @@
 package org.stegripe.plugin.example;
 
-import org.stegripe.plugin.core.config.StegrapeConfigRecord;
-import org.stegripe.plugin.core.config.StegripeConfig;
+import org.stegripe.plugin.core.config.StegripeConfigRecord;
 
 public class ExampleConfigType {
 
-    public static final StegrapeConfigRecord<String> EXAMPLE_STRING =  new StegrapeConfigRecord<>("example.string", "Hello, World!");
+    public static final StegripeConfigRecord<String> EXAMPLE_STRING =  new StegripeConfigRecord<>("example.string", "Hello, World!");
 
 }

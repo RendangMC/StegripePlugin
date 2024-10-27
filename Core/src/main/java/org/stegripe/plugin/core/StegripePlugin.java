@@ -3,7 +3,7 @@ package org.stegripe.plugin.core;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.stegripe.plugin.core.commands.StegripeCommand;
 import org.stegripe.plugin.core.commands.StegripeBukkitCommand;
-import org.stegripe.plugin.core.config.StegrapeConfigRecord;
+import org.stegripe.plugin.core.config.StegripeConfigRecord;
 import org.stegripe.plugin.core.messages.StegripeMessage;
 import org.stegripe.plugin.core.config.StegripeConfig;
 import org.stegripe.plugin.core.messages.StegripeMessageRecord;
