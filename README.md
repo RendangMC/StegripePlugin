@@ -1,4 +1,4 @@
-# Plugin Framework
+# SegripePlugin Framework
 
 This is a framework to build plugins that contain auto-generated configuration, message configuration, and commands. This eliminates the need to copy code repeatedly.
 
