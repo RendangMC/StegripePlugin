@@ -33,7 +33,7 @@ public class StegripeConfig{
         return stegripeConfig;
     }
 
-    void save() {
+    public void save() {
         plugin.saveConfig();
     }
 
