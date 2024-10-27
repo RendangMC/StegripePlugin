@@ -2,11 +2,11 @@ package org.stegripe.plugin.core.config;
 
 import org.bukkit.plugin.Plugin;
 
-public class StegripeConfig <T> {
+public class StegripeConfig{
 
     private final Plugin plugin;
 
-    public StegripeConfig(Plugin plugin, Class<T> configTypeClass) {
+    public StegripeConfig(Plugin plugin, Class<?> configTypeClass) {
         this.plugin = plugin;
         var config = plugin.getConfig();
         config.options().copyDefaults(true);
@@ -26,7 +26,7 @@ public class StegripeConfig <T> {
         plugin.getConfig().set(configRecord.path, value);
     }
 
-    public static <T> StegripeConfig<T> load(Plugin plugin, Class<T>  tClass) {
+    public static StegripeConfig load(Plugin plugin, Class<?>  tClass) {
         plugin.reloadConfig();
         var stegripeConfig = new StegripeConfig(plugin, tClass);
         stegripeConfig.save();

@@ -7,9 +7,7 @@ import org.stegripe.plugin.example.command.ExampleCommand;
 
 import java.io.File;
 
-public final class ExamplePlugin extends StegripePlugin<ExampleConfigType,
-        StegripeMessage<ExampleMessageType>,
-        ExampleMessageType> {
+public final class ExamplePlugin extends StegripePlugin<StegripeConfig, StegripeMessage<ExampleMessageType>> {
 
     private final File messageFile = new File(getDataFolder(), "messages.yml");
 
@@ -25,7 +23,7 @@ public final class ExamplePlugin extends StegripePlugin<ExampleConfigType,
     }
 
     @Override
-    public StegripeConfig<ExampleConfigType> onCreateConfig() {
+    public StegripeConfig onCreateConfig() {
         return StegripeConfig.load(this, ExampleConfigType.class);
     }
 

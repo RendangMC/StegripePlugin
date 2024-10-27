@@ -3,18 +3,15 @@ package org.stegripe.plugin.core;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.stegripe.plugin.core.commands.StegripeCommand;
 import org.stegripe.plugin.core.commands.StegripeBukkitCommand;
-import org.stegripe.plugin.core.config.StegripeConfigRecord;
 import org.stegripe.plugin.core.messages.StegripeMessage;
 import org.stegripe.plugin.core.config.StegripeConfig;
-import org.stegripe.plugin.core.messages.StegripeMessageRecord;
 
-public abstract class StegripePlugin< C,
-        M extends StegripeMessage<TM>, TM extends Enum<TM> & StegripeMessageRecord> extends JavaPlugin {
+public abstract class StegripePlugin< C extends StegripeConfig, M extends StegripeMessage<?>> extends JavaPlugin {
 
-    private StegripeConfig<C> config;
+    private C config;
     private M messages;
 
-    abstract public StegripeConfig<C> onCreateConfig();
+    abstract public C onCreateConfig();
     abstract public M onCreateMessages();
 
     @Override
@@ -28,7 +25,7 @@ public abstract class StegripePlugin< C,
         messages = onCreateMessages();
     }
 
-    public StegripeConfig<C> getPluginConfig(){
+    public C getPluginConfig(){
         return config;
     }
 
