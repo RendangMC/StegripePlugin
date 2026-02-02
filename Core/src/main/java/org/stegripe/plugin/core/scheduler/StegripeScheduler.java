@@ -53,45 +53,55 @@ public class StegripeScheduler {
     
     /**
      * Run a delayed task on the main thread (or global region in Folia)
+     * @param task The task to run
+     * @param delayTicks Delay in server ticks (20 ticks = 1 second)
      */
-    public void runTaskLater(Runnable task, long delay) {
+    public void runTaskLater(Runnable task, long delayTicks) {
         if (isFolia) {
-            Bukkit.getGlobalRegionScheduler().runDelayed(plugin, scheduledTask -> task.run(), delay);
+            Bukkit.getGlobalRegionScheduler().runDelayed(plugin, scheduledTask -> task.run(), delayTicks);
         } else {
-            Bukkit.getScheduler().runTaskLater(plugin, task, delay);
+            Bukkit.getScheduler().runTaskLater(plugin, task, delayTicks);
         }
     }
     
     /**
      * Run a delayed task asynchronously
+     * @param task The task to run
+     * @param delayTicks Delay in server ticks (20 ticks = 1 second)
      */
-    public void runTaskLaterAsynchronously(Runnable task, long delay, TimeUnit timeUnit) {
+    public void runTaskLaterAsynchronously(Runnable task, long delayTicks) {
         if (isFolia) {
-            Bukkit.getAsyncScheduler().runDelayed(plugin, scheduledTask -> task.run(), delay * 50, timeUnit);
+            Bukkit.getAsyncScheduler().runDelayed(plugin, scheduledTask -> task.run(), delayTicks * 50, TimeUnit.MILLISECONDS);
         } else {
-            Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, task, delay);
+            Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, task, delayTicks);
         }
     }
     
     /**
      * Run a repeating task on the main thread (or global region in Folia)
+     * @param task The task to run
+     * @param delayTicks Initial delay in server ticks
+     * @param periodTicks Period between executions in server ticks (20 ticks = 1 second)
      */
-    public void runTaskTimer(Runnable task, long delay, long period) {
+    public void runTaskTimer(Runnable task, long delayTicks, long periodTicks) {
         if (isFolia) {
-            Bukkit.getGlobalRegionScheduler().runAtFixedRate(plugin, scheduledTask -> task.run(), delay, period);
+            Bukkit.getGlobalRegionScheduler().runAtFixedRate(plugin, scheduledTask -> task.run(), delayTicks, periodTicks);
         } else {
-            Bukkit.getScheduler().runTaskTimer(plugin, task, delay, period);
+            Bukkit.getScheduler().runTaskTimer(plugin, task, delayTicks, periodTicks);
         }
     }
     
     /**
      * Run a repeating task asynchronously
+     * @param task The task to run
+     * @param delayTicks Initial delay in server ticks
+     * @param periodTicks Period between executions in server ticks (20 ticks = 1 second)
      */
-    public void runTaskTimerAsynchronously(Runnable task, long delay, long period, TimeUnit timeUnit) {
+    public void runTaskTimerAsynchronously(Runnable task, long delayTicks, long periodTicks) {
         if (isFolia) {
-            Bukkit.getAsyncScheduler().runAtFixedRate(plugin, scheduledTask -> task.run(), delay * 50, period * 50, timeUnit);
+            Bukkit.getAsyncScheduler().runAtFixedRate(plugin, scheduledTask -> task.run(), delayTicks * 50, periodTicks * 50, TimeUnit.MILLISECONDS);
         } else {
-            Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, task, delay, period);
+            Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, task, delayTicks, periodTicks);
         }
     }
     
