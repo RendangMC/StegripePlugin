@@ -19,7 +19,7 @@ This guide explains the migration from Spigot framework to Paper framework with 
 Note: Both formats are supported, but `paper-plugin.yml` is recommended for Paper/Folia compatibility.
 
 ### 4. Scheduler Changes (Folia Support)
-The framework now includes `StegripeScheduler` which automatically handles differences between Paper and Folia:
+The framework now includes `RendangScheduler` which automatically handles differences between Paper and Folia:
 
 #### Before (Bukkit Scheduler):
 ```java
@@ -84,11 +84,11 @@ commands:
         description: Your command description
 ```
 
-### 3. Use StegripeScheduler
+### 3. Use RendangScheduler
 Access the built-in Folia-compatible scheduler:
 
 ```java
-public class YourPlugin extends StegripePlugin<YourConfig, YourMessages> {
+public class YourPlugin extends RendangPlugin<YourConfig, YourMessages> {
     
     @Override
     public void onEnable() {
@@ -133,7 +133,7 @@ Test your plugin on:
 1. **Paper Server**: Standard testing on Paper 1.21.4+
 2. **Folia Server**: Test region-based threading with Folia
 
-The `StegripeScheduler` will automatically use the correct scheduler implementation.
+The `RendangScheduler` will automatically use the correct scheduler implementation.
 
 ## Troubleshooting
 

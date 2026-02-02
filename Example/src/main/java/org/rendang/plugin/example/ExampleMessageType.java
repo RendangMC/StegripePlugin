@@ -1,6 +1,6 @@
-package org.stegripe.plugin.example;
+package org.rendang.plugin.example;
 
-import org.stegripe.plugin.core.messages.StegripeMessageRecord;
+import org.rendang.plugin.core.messages.StegripeMessageRecord;
 
 public enum ExampleMessageType implements StegripeMessageRecord {
     EXAMPLE_MESSAGE("message.hello", "Hello, <%>!", "player"),

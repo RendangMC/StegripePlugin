@@ -1,13 +1,13 @@
-package org.stegripe.plugin.example;
+package org.rendang.plugin.example;
 
-import org.stegripe.plugin.core.StegripePlugin;
-import org.stegripe.plugin.core.config.StegripeConfig;
-import org.stegripe.plugin.core.messages.StegripeMessage;
-import org.stegripe.plugin.example.command.ExampleCommand;
+import org.rendang.plugin.core.RendangPlugin;
+import org.rendang.plugin.core.config.RendangConfig;
+import org.rendang.plugin.core.messages.RendangMessage;
+import org.rendang.plugin.example.command.ExampleCommand;
 
 import java.io.File;
 
-public final class ExamplePlugin extends StegripePlugin<StegripeConfig, StegripeMessage<ExampleMessageType>> {
+public final class ExamplePlugin extends RendangPlugin<RendangConfig, RendangMessage<ExampleMessageType>> {
 
     private final File messageFile = new File(getDataFolder(), "messages.yml");
 
@@ -32,13 +32,13 @@ public final class ExamplePlugin extends StegripePlugin<StegripeConfig, Stegripe
     }
 
     @Override
-    public StegripeConfig onCreateConfig() {
-        return StegripeConfig.load(this, ExampleConfigType.class);
+    public RendangConfig onCreateConfig() {
+        return RendangConfig.load(this, ExampleConfigType.class);
     }
 
     @Override
-    public StegripeMessage<ExampleMessageType> onCreateMessages() {
-        return StegripeMessage.load(messageFile, ExampleMessageType.class);
+    public RendangMessage<ExampleMessageType> onCreateMessages() {
+        return RendangMessage.load(messageFile, ExampleMessageType.class);
     }
 
 }

@@ -1,4 +1,4 @@
-# StegripePlugin Framework
+# RendangPlugin Framework
 
 This is a framework to build plugins that contain auto-generated configuration, message configuration, and commands using **Paper API** with **Folia support**. This eliminates the need to copy code repeatedly.
 
@@ -36,8 +36,8 @@ Add the following repository and dependency to your `pom.xml`:
 </repository>
 
 <dependency>
-  <groupId>org.stegripe.plugin</groupId>
-  <artifactId>plugin-core</artifactId>
+  <groupId>org.rendang.plugin</groupId>
+  <artifactId>rendang-plugin-core</artifactId>
   <version>1.0-SNAPSHOT</version>
 </dependency>
 ```
@@ -56,17 +56,17 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.stegripe.plugin:plugin-core:1.0-SNAPSHOT'
+    implementation 'org.rendang.plugin:rendang-plugin-core:1.0-SNAPSHOT'
 }
 ```
 
 ## Folia Compatibility
 
-The framework provides a `StegripeScheduler` that automatically detects whether your plugin is running on Folia or Paper and uses the appropriate scheduler:
+The framework provides a `RendangScheduler` that automatically detects whether your plugin is running on Folia or Paper and uses the appropriate scheduler:
 
 ```java
 // Access the scheduler from your plugin
-StegripeScheduler scheduler = getScheduler();
+RendangScheduler scheduler = getScheduler();
 
 // Run a task (automatically uses the right scheduler)
 scheduler.runTask(() -> {

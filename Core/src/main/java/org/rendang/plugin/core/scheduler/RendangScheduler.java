@@ -1,4 +1,4 @@
-package org.stegripe.plugin.core.scheduler;
+package org.rendang.plugin.core.scheduler;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
@@ -17,12 +17,12 @@ import java.util.concurrent.TimeUnit;
  * the Bukkit API, regardless of whether the server is running Paper or Folia.
  * </p>
  */
-public class StegripeScheduler {
+public class RendangScheduler {
     
     private final Plugin plugin;
     private final boolean isFolia;
     
-    public StegripeScheduler(Plugin plugin) {
+    public RendangScheduler(Plugin plugin) {
         this.plugin = plugin;
         this.isFolia = checkFolia();
     }

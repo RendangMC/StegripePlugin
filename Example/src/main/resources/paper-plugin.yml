@@ -1,6 +1,6 @@
 name: ExamplePlugin
 version: '1.0-SNAPSHOT'
-main: org.stegripe.plugin.example.ExamplePlugin
+main: org.rendang.plugin.example.ExamplePlugin
 api-version: '1.21'
 folia-supported: true
 commands:

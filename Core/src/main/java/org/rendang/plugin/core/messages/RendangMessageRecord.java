@@ -1,6 +1,6 @@
-package org.stegripe.plugin.core.messages;
+package org.rendang.plugin.core.messages;
 
-public interface StegripeMessageRecord {
+public interface RendangMessageRecord {
     String getPath();
     String getMessageTemplate();
     String[] getParams();

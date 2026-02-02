@@ -1,4 +1,4 @@
-package org.stegripe.plugin.core.commands.event;
+package org.rendang.plugin.core.commands.event;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

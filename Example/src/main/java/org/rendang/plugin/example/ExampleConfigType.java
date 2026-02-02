@@ -1,6 +1,6 @@
-package org.stegripe.plugin.example;
+package org.rendang.plugin.example;
 
-import org.stegripe.plugin.core.config.StegripeConfigRecord;
+import org.rendang.plugin.core.config.StegripeConfigRecord;
 
 public class ExampleConfigType {
 
