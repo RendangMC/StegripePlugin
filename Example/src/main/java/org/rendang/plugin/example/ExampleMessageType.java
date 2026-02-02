@@ -1,8 +1,8 @@
 package org.rendang.plugin.example;
 
-import org.rendang.plugin.core.messages.StegripeMessageRecord;
+import org.rendang.plugin.core.messages.RendangMessageRecord;
 
-public enum ExampleMessageType implements StegripeMessageRecord {
+public enum ExampleMessageType implements RendangMessageRecord {
     EXAMPLE_MESSAGE("message.hello", "Hello, <%>!", "player"),
     CONFIG_RELOADED("message.config-reloaded", "Config reloaded!")
     ;
