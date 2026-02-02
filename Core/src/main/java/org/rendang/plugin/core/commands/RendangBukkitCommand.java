@@ -1,24 +1,24 @@
-package org.stegripe.plugin.core.commands;
+package org.rendang.plugin.core.commands;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
-import org.stegripe.plugin.core.commands.annotation.AutoComplete;
-import org.stegripe.plugin.core.commands.annotation.CommandExecute;
-import org.stegripe.plugin.core.commands.event.CommandEvent;
+import org.rendang.plugin.core.commands.annotation.AutoComplete;
+import org.rendang.plugin.core.commands.annotation.CommandExecute;
+import org.rendang.plugin.core.commands.event.CommandEvent;
 import java.lang.reflect.Method;
 import java.util.*;
 
-public class StegripeBukkitCommand implements TabCompleter, CommandExecutor {
+public class RendangBukkitCommand implements TabCompleter, CommandExecutor {
     final HashMap<String, Execution> executor = new HashMap<>();
     final HashMap<String, Execution> completor = new HashMap<>();
-    final StegripeCommand stegripeCommand;
+    final RendangCommand rendangCommand;
 
-    public StegripeBukkitCommand(StegripeCommand StegripeCommand) {
-        this.stegripeCommand = StegripeCommand;
-        Class<StegripeBukkitCommand> commandsInstanceClass = StegripeBukkitCommand.class;
+    public RendangBukkitCommand(RendangCommand RendangCommand) {
+        this.rendangCommand = RendangCommand;
+        Class<RendangBukkitCommand> commandsInstanceClass = RendangBukkitCommand.class;
         for (Method method : commandsInstanceClass.getDeclaredMethods()) {
             if (method.isAnnotationPresent(CommandExecute.class)) {
                 CommandExecute commandExecute = method.getAnnotation(CommandExecute.class);
@@ -29,15 +29,15 @@ public class StegripeBukkitCommand implements TabCompleter, CommandExecutor {
                 completor.put(autoComplete.command(), new Execution(this, method));
             }
         }
-        Class<?> clazz = StegripeCommand.getClass();
+        Class<?> clazz = RendangCommand.getClass();
         for (Method method : clazz.getDeclaredMethods()) {
             if (method.isAnnotationPresent(CommandExecute.class)) {
                 CommandExecute commandExecute = method.getAnnotation(CommandExecute.class);
-                executor.put(commandExecute.command(), new Execution(StegripeCommand, method));
+                executor.put(commandExecute.command(), new Execution(RendangCommand, method));
             }
             if (method.isAnnotationPresent(AutoComplete.class)) {
                 AutoComplete autoComplete = method.getAnnotation(AutoComplete.class);
-                completor.put(autoComplete.command(), new Execution(StegripeCommand, method));
+                completor.put(autoComplete.command(), new Execution(RendangCommand, method));
             }
         }
         for(Execution execution : executor.values()){
@@ -80,12 +80,12 @@ public class StegripeBukkitCommand implements TabCompleter, CommandExecutor {
             if (i >= commandsString.size()) break;
             CommandExecute commandExecute = executor.get(commandsString.get(i)).method.getAnnotation(CommandExecute.class);
             message.append("\n" + ChatColor.GOLD).append(commandExecute.command())
-                    .append(" : /" + stegripeCommand.getCommandName() + " ").append(commandExecute.command().toLowerCase(Locale.ROOT)).append(" ")
+                    .append(" : /" + rendangCommand.getCommandName() + " ").append(commandExecute.command().toLowerCase(Locale.ROOT)).append(" ")
                     .append(commandExecute.usages()).append(ChatColor.RESET + "\n");
             message.append("  ").append(commandExecute.description());
         }
         if(page + 1 < maxPage){
-            message.append("\n" + ChatColor.GREEN + "Type /" + stegripeCommand.getCommandName() + " help " + ChatColor.GOLD.toString() + (page+2) + ChatColor.GREEN.toString() + " to see more commands");
+            message.append("\n" + ChatColor.GREEN + "Type /" + rendangCommand.getCommandName() + " help " + ChatColor.GOLD.toString() + (page+2) + ChatColor.GREEN.toString() + " to see more commands");
         }
         event.getSender().sendMessage(message.toString());
         return true;
@@ -107,7 +107,7 @@ public class StegripeBukkitCommand implements TabCompleter, CommandExecutor {
                 return true;
             }
             CommandExecute commandExecute = executor.get(rootCommand).method.getAnnotation(CommandExecute.class);
-            if(!sender.hasPermission(commandExecute.permission()) || !commandExecute.permission().isEmpty()){
+            if(!commandExecute.permission().isEmpty() && !sender.hasPermission(commandExecute.permission())){
                 sender.sendMessage("You don't have permission to use this command");
                 return true;
             }
@@ -139,7 +139,7 @@ public class StegripeBukkitCommand implements TabCompleter, CommandExecutor {
             Execution execution = completor.get(commandName);
             if(execution == null) return completion;
             AutoComplete autoComplete = execution.method.getAnnotation(AutoComplete.class);
-            if(sender.hasPermission(autoComplete.permission()) || autoComplete.permission().isEmpty()){
+            if(autoComplete.permission().isEmpty() || sender.hasPermission(autoComplete.permission())){
                 try {
                     List<String> result = (List<String>) execution.method.invoke(execution.context, new CommandEvent(sender, command, alias, args));
                     if(result == null) return null;

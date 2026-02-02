@@ -1,4 +1,4 @@
-package org.stegripe.plugin.core.commands.annotation;
+package org.rendang.plugin.core.commands.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

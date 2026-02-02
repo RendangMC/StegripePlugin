@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.stegripe.plugin</groupId>
-        <artifactId>plugin-parrent</artifactId>
+        <groupId>org.rendang.plugin</groupId>
+        <artifactId>plugin-parent</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
@@ -17,11 +17,18 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <!-- Note: Paper API dependency configured below.
+         Paper API is fully compatible with Spigot API and provides additional features.
+         If Paper repository is unavailable, you can temporarily use Spigot API as a fallback:
+         <groupId>org.spigotmc</groupId>
+         <artifactId>spigot-api</artifactId>
+         <version>1.21.4-R0.1-SNAPSHOT</version>
+    -->
     <dependencies>
         <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
-            <version>1.20.4-R0.1-SNAPSHOT</version>
+            <groupId>io.papermc.paper</groupId>
+            <artifactId>paper-api</artifactId>
+            <version>1.21.4-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

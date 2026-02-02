@@ -1,16 +1,16 @@
-package org.stegripe.plugin.example.command;
+package org.rendang.plugin.example.command;
 
-import org.stegripe.plugin.core.commands.StegripeCommand;
-import org.stegripe.plugin.core.commands.annotation.AutoComplete;
-import org.stegripe.plugin.core.commands.annotation.CommandExecute;
-import org.stegripe.plugin.core.commands.event.CommandEvent;
-import org.stegripe.plugin.example.ExampleConfigType;
-import org.stegripe.plugin.example.ExampleMessageType;
-import org.stegripe.plugin.example.ExamplePlugin;
+import org.rendang.plugin.core.commands.RendangCommand;
+import org.rendang.plugin.core.commands.annotation.AutoComplete;
+import org.rendang.plugin.core.commands.annotation.CommandExecute;
+import org.rendang.plugin.core.commands.event.CommandEvent;
+import org.rendang.plugin.example.ExampleConfigType;
+import org.rendang.plugin.example.ExampleMessageType;
+import org.rendang.plugin.example.ExamplePlugin;
 
 import java.util.List;
 
-public class ExampleCommand implements StegripeCommand {
+public class ExampleCommand implements RendangCommand {
 
     private final ExamplePlugin plugin;
 

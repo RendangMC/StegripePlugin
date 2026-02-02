@@ -1,4 +1,4 @@
-package org.stegripe.plugin.core.messages;
+package org.rendang.plugin.core.messages;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -8,11 +8,11 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class StegripeMessage <T extends Enum<T> & StegripeMessageRecord> {
+public class RendangMessage <T extends Enum<T> & RendangMessageRecord> {
     private final FileConfiguration config;
     private final Map<String, String[]> paramMap = new HashMap<>();
 
-    public StegripeMessage(FileConfiguration config, Class<T> tClass, String placeholder) {
+    public RendangMessage(FileConfiguration config, Class<T> tClass, String placeholder) {
         this.config = config;
         config.options().copyDefaults(true);
         for (T type : tClass.getEnumConstants()) {
@@ -27,13 +27,13 @@ public class StegripeMessage <T extends Enum<T> & StegripeMessageRecord> {
         }
     }
 
-    public StegripeMessage(FileConfiguration config, Class<T> tClass) {
+    public RendangMessage(FileConfiguration config, Class<T> tClass) {
         this(config, tClass, "<%>");
     }
 
-    public static <T extends Enum<T> & StegripeMessageRecord> StegripeMessage<T> load(File file, Class<T> tClass) {
+    public static <T extends Enum<T> & RendangMessageRecord> RendangMessage<T> load(File file, Class<T> tClass) {
         var config = YamlConfiguration.loadConfiguration(file);
-        var messages = new StegripeMessage<>(config, tClass);
+        var messages = new RendangMessage<>(config, tClass);
         try {
             messages.save(file);
         } catch (IOException e) {
@@ -42,12 +42,12 @@ public class StegripeMessage <T extends Enum<T> & StegripeMessageRecord> {
         return messages;
     }
 
-    public String parse(T stegripeMessage, Object ...params){
-        var message = config.getString(stegripeMessage.getPath());
+    public String parse(T rendangMessage, Object ...params){
+        var message = config.getString(rendangMessage.getPath());
         if(message == null){
             return "";
         }
-        var paramTemplate = paramMap.get(stegripeMessage.getPath());
+        var paramTemplate = paramMap.get(rendangMessage.getPath());
         for (int i = 0; i < paramTemplate.length; i++) {
             final var param = paramTemplate[i];
             final var data = params[i];
