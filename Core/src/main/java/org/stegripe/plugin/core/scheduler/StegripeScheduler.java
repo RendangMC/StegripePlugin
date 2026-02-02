@@ -7,8 +7,15 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Utility class for scheduling tasks that work with both Paper and Folia.
- * Folia uses a region-based threading model, so we use server-global region
- * when available, otherwise fall back to the standard Bukkit scheduler.
+ * <p>
+ * Folia uses a region-based threading model with separate schedulers for different regions,
+ * while Paper uses the traditional Bukkit scheduler. This class automatically detects the
+ * server type and delegates to the appropriate scheduler implementation.
+ * </p>
+ * <p>
+ * All timing parameters use server ticks (20 ticks = 1 second) for consistency with
+ * the Bukkit API, regardless of whether the server is running Paper or Folia.
+ * </p>
  */
 public class StegripeScheduler {
     
@@ -20,6 +27,13 @@ public class StegripeScheduler {
         this.isFolia = checkFolia();
     }
     
+    /**
+     * Detects if the server is running Folia by checking for the presence of
+     * Folia-specific classes. Folia introduces the GlobalRegionScheduler class
+     * which is not present in standard Paper or Spigot servers.
+     *
+     * @return true if running on Folia, false otherwise
+     */
     private boolean checkFolia() {
         try {
             Class.forName("io.papermc.paper.threadedregions.scheduler.GlobalRegionScheduler");
@@ -105,6 +119,13 @@ public class StegripeScheduler {
         }
     }
     
+    /**
+     * Checks if the plugin is running on a Folia server.
+     * This can be useful for implementing Folia-specific optimizations
+     * or behaviors in plugin code.
+     *
+     * @return true if running on Folia, false if running on Paper or Spigot
+     */
     public boolean isFolia() {
         return isFolia;
     }
