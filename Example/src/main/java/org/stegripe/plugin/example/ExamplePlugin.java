@@ -15,6 +15,15 @@ public final class ExamplePlugin extends StegripePlugin<StegripeConfig, Stegripe
     public void onEnable() {
         super.onEnable();
         registerCommand(new ExampleCommand(this));
+        
+        // Example: Using Folia-compatible scheduler
+        // getScheduler().runTask(() -> {
+        //     getLogger().info("This runs on the main thread (or global region in Folia)");
+        // });
+        
+        // getScheduler().runTaskAsynchronously(() -> {
+        //     getLogger().info("This runs asynchronously on both Paper and Folia");
+        // });
     }
 
     @Override
