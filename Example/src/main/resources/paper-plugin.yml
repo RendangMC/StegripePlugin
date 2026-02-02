@@ -1,0 +1,11 @@
+name: ExamplePlugin
+version: '1.0-SNAPSHOT'
+main: org.stegripe.plugin.example.ExamplePlugin
+api-version: '1.21'
+folia-supported: true
+commands:
+    example:
+        description: Example command
+        usage: /example help
+        aliases:
+        - ex
