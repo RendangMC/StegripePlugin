@@ -107,7 +107,7 @@ public class RendangBukkitCommand implements TabCompleter, CommandExecutor {
                 return true;
             }
             CommandExecute commandExecute = executor.get(rootCommand).method.getAnnotation(CommandExecute.class);
-            if(!sender.hasPermission(commandExecute.permission()) || !commandExecute.permission().isEmpty()){
+            if(!commandExecute.permission().isEmpty() && !sender.hasPermission(commandExecute.permission())){
                 sender.sendMessage("You don't have permission to use this command");
                 return true;
             }
@@ -139,7 +139,7 @@ public class RendangBukkitCommand implements TabCompleter, CommandExecutor {
             Execution execution = completor.get(commandName);
             if(execution == null) return completion;
             AutoComplete autoComplete = execution.method.getAnnotation(AutoComplete.class);
-            if(sender.hasPermission(autoComplete.permission()) || autoComplete.permission().isEmpty()){
+            if(autoComplete.permission().isEmpty() || sender.hasPermission(autoComplete.permission())){
                 try {
                     List<String> result = (List<String>) execution.method.invoke(execution.context, new CommandEvent(sender, command, alias, args));
                     if(result == null) return null;
