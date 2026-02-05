@@ -17,19 +17,22 @@
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <papermc.repo.url>https://repo.papermc.io/repository/maven-public/</papermc.repo.url>
+        <dlands.repo.url>https://repo.dlands.me/snapshots</dlands.repo.url>
+        <sonatype.repo.url>https://oss.sonatype.org/content/groups/public/</sonatype.repo.url>
     </properties>
 
     <repositories>
         <repository>
             <id>papermc</id>
-            <url>https://repo.papermc.io/repository/maven-public/</url>
+            <url>${papermc.repo.url}</url>
         </repository>
     </repositories>
 
     <distributionManagement>
         <snapshotRepository>
             <id>dlands-repo</id>
-            <url>https://repo.dlands.me/snapshots</url>
+            <url>${dlands.repo.url}</url>
         </snapshotRepository>
     </distributionManagement>
 </project>
