@@ -40,6 +40,15 @@ Setelah secrets dikonfigurasi, workflow akan:
 2. **Build**: Mengompilasi project menggunakan Maven dengan Java 21
 3. **Deploy**: Mengunggah artifact ke Maven repository yang dikonfigurasi di `pom.xml` (`https://repo.dlands.me/snapshots`)
 
+## Environment Variables
+
+Workflow menggunakan environment variables untuk repository URLs:
+- `PAPERMC_REPO_URL`: URL untuk PaperMC repository (default: `https://repo.papermc.io/repository/maven-public/`)
+- `DLANDS_REPO_URL`: URL untuk DLands repository (default: `https://repo.dlands.me/snapshots`)
+- `SONATYPE_REPO_URL`: URL untuk Sonatype repository (default: `https://oss.sonatype.org/content/groups/public/`)
+
+Environment variables ini didefinisikan di workflow file dan dapat diubah sesuai kebutuhan tanpa perlu mengubah `pom.xml`.
+
 ## Testing Workflow
 
 Setelah secrets dikonfigurasi dan workflow dibuat:

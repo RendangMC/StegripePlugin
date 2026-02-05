@@ -7,6 +7,11 @@ on:
     branches:
       - master
 
+env:
+  PAPERMC_REPO_URL: https://repo.papermc.io/repository/maven-public/
+  DLANDS_REPO_URL: https://repo.dlands.me/snapshots
+  SONATYPE_REPO_URL: https://oss.sonatype.org/content/groups/public/
+
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -35,7 +40,7 @@ jobs:
           }]
           
     - name: Build and Deploy to Maven Repository
-      run: mvn -B clean deploy --file pom.xml
+      run: mvn -B clean deploy --file pom.xml -Dpapermc.repo.url="${PAPERMC_REPO_URL}" -Ddlands.repo.url="${DLANDS_REPO_URL}" -Dsonatype.repo.url="${SONATYPE_REPO_URL}"
 
 # Secrets yang diperlukan (harus dikonfigurasi di GitHub Settings > Secrets and variables > Actions):
 # - MAVEN_USERNAME: Username untuk autentikasi ke Maven repository
