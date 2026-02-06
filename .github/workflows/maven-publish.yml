@@ -1,11 +1,12 @@
 # GitHub Actions Workflow untuk deploy ke Maven Repository
-# Workflow ini akan otomatis berjalan ketika ada push ke branch master
+# Workflow ini akan otomatis berjalan ketika ada push ke branch master atau dev
 name: Publish to Maven Repository
 
 on:
   push:
     branches:
       - master
+      - dev
 
 jobs:
   publish:
@@ -30,4 +31,4 @@ jobs:
       env:
         MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
         MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
-        MAVEN_REPO_URL: https://repo.minekarta.com/snapshots
+        MAVEN_REPO_URL: ${{ secrets.MAVEN_REPO_URL }}
