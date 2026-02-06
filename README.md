@@ -31,8 +31,8 @@ Add the following repository and dependency to your `pom.xml`:
 
 <repository>
   <id>dlands</id>
-  <name>Dlands Repository</name>
-  <url>https://repo.dlands.me/<repository></url>
+  <name>Rendang Repository</name>
+  <url>https://repo.minekarta.com/snapshots</url>
 </repository>
 
 <dependency>
