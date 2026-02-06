@@ -4,10 +4,11 @@ Workflow otomatis untuk deployment ke Maven repository memerlukan konfigurasi se
 
 ## Secrets yang Diperlukan
 
-Workflow ini memerlukan 2 secrets untuk autentikasi ke Maven repository:
+Workflow ini memerlukan 3 secrets untuk autentikasi dan konfigurasi Maven repository:
 
 1. **MAVEN_USERNAME** - Username untuk autentikasi ke Maven repository
 2. **MAVEN_PASSWORD** - Password atau token untuk autentikasi ke Maven repository
+3. **MAVEN_REPO_URL** - URL dari Maven repository target (contoh: `https://repo.minekarta.com/snapshots`)
 
 ## Cara Mengatur Secrets di GitHub
 
@@ -32,11 +33,17 @@ Workflow ini memerlukan 2 secrets untuk autentikasi ke Maven repository:
    - **Value**: Masukkan password atau token untuk Maven repository
    - Klik **Add secret**
 
+5. Klik tombol **New repository secret** lagi
+6. Tambahkan secret ketiga:
+   - **Name**: `MAVEN_REPO_URL`
+   - **Value**: Masukkan URL Maven repository target (contoh: `https://repo.minekarta.com/snapshots`)
+   - Klik **Add secret**
+
 ## Cara Kerja Workflow
 
 Setelah secrets dikonfigurasi, workflow akan:
 
-1. **Trigger**: Otomatis berjalan setiap kali ada push ke branch `master`
+1. **Trigger**: Otomatis berjalan setiap kali ada push ke branch `master` atau `dev`
 2. **Build**: Mengompilasi project menggunakan Maven dengan Java 21
 3. **Deploy**: Mengunggah artifact ke Maven repository yang dikonfigurasi di `pom.xml` dan environment variable `MAVEN_REPO_URL`
 
@@ -44,7 +51,7 @@ Setelah secrets dikonfigurasi, workflow akan:
 
 Setelah secrets dikonfigurasi dan workflow dibuat:
 
-1. Push commit ke branch `master`
+1. Push commit ke branch `master` atau `dev`
 2. Buka tab **Actions** di repository GitHub
 3. Anda akan melihat workflow "Publish to Maven Repository" berjalan
 4. Klik pada workflow run untuk melihat detail dan log
@@ -52,8 +59,9 @@ Setelah secrets dikonfigurasi dan workflow dibuat:
 ## Troubleshooting
 
 ### Workflow Gagal dengan Error Authentication
-- Pastikan `MAVEN_USERNAME` dan `MAVEN_PASSWORD` sudah dikonfigurasi dengan benar
+- Pastikan `MAVEN_USERNAME`, `MAVEN_PASSWORD`, dan `MAVEN_REPO_URL` sudah dikonfigurasi dengan benar
 - Pastikan credentials yang digunakan memiliki permission untuk deploy ke repository
+- Pastikan `MAVEN_REPO_URL` adalah URL yang valid dan dapat diakses
 
 ### Build Gagal
 - Periksa log di tab Actions untuk melihat error spesifik
@@ -66,7 +74,7 @@ Setelah secrets dikonfigurasi dan workflow dibuat:
 ## Informasi Tambahan
 
 ### Maven Repository Configuration
-Repository target dikonfigurasi di `pom.xml` dan environment variable di workflow:
+Repository target dikonfigurasi di `pom.xml` dan mengambil nilai dari GitHub secret:
 ```xml
 <distributionManagement>
     <snapshotRepository>
@@ -79,10 +87,10 @@ Repository target dikonfigurasi di `pom.xml` dan environment variable di workflo
 Di `.github/workflows/maven-publish.yml`:
 ```yaml
 env:
-  MAVEN_REPO_URL: https://repo.dlands.me/snapshots
+  MAVEN_REPO_URL: ${{ secrets.MAVEN_REPO_URL }}
 ```
 
-Untuk mengubah repository target, cukup edit nilai `MAVEN_REPO_URL` di workflow file.
+Untuk mengubah repository target, cukup ubah nilai secret `MAVEN_REPO_URL` di GitHub repository settings.
 
 ### Version Management
 - Project saat ini menggunakan version `1.0-SNAPSHOT`
