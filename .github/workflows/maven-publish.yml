@@ -7,6 +7,9 @@ on:
     branches:
       - master
 
+env:
+  MAVEN_REPO_URL: https://repo.dlands.me/snapshots
+
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -29,7 +32,7 @@ jobs:
       with:
         servers: |
           [{
-            "id": "dlands-repo",
+            "id": "rendangmc-repo",
             "username": "${{ secrets.MAVEN_USERNAME }}",
             "password": "${{ secrets.MAVEN_PASSWORD }}"
           }]

@@ -23,7 +23,7 @@ Workflow ini memerlukan 2 secrets untuk autentikasi ke Maven repository:
 1. Klik tombol **New repository secret**
 2. Tambahkan secret pertama:
    - **Name**: `MAVEN_USERNAME`
-   - **Value**: Masukkan username untuk Maven repository (repo.dlands.me)
+   - **Value**: Masukkan username untuk Maven repository
    - Klik **Add secret**
 
 3. Klik tombol **New repository secret** lagi
@@ -38,7 +38,7 @@ Setelah secrets dikonfigurasi, workflow akan:
 
 1. **Trigger**: Otomatis berjalan setiap kali ada push ke branch `master`
 2. **Build**: Mengompilasi project menggunakan Maven dengan Java 21
-3. **Deploy**: Mengunggah artifact ke Maven repository yang dikonfigurasi di `pom.xml` (`https://repo.dlands.me/snapshots`)
+3. **Deploy**: Mengunggah artifact ke Maven repository yang dikonfigurasi di `pom.xml` dan environment variable `MAVEN_REPO_URL`
 
 ## Testing Workflow
 
@@ -66,15 +66,23 @@ Setelah secrets dikonfigurasi dan workflow dibuat:
 ## Informasi Tambahan
 
 ### Maven Repository Configuration
-Repository target dikonfigurasi di `pom.xml`:
+Repository target dikonfigurasi di `pom.xml` dan environment variable di workflow:
 ```xml
 <distributionManagement>
     <snapshotRepository>
-        <id>dlands-repo</id>
-        <url>https://repo.dlands.me/snapshots</url>
+        <id>rendangmc-repo</id>
+        <url>${env.MAVEN_REPO_URL}</url>
     </snapshotRepository>
 </distributionManagement>
 ```
+
+Di `.github/workflows/maven-publish.yml`:
+```yaml
+env:
+  MAVEN_REPO_URL: https://repo.dlands.me/snapshots
+```
+
+Untuk mengubah repository target, cukup edit nilai `MAVEN_REPO_URL` di workflow file.
 
 ### Version Management
 - Project saat ini menggunakan version `1.0-SNAPSHOT`
