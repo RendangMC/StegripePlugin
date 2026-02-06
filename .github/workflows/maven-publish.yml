@@ -1,4 +1,4 @@
-# GitHub Actions Workflow untuk deploy ke Maven Repository
+# GitHub Actions Workflow untuk deploy ke Maven Repository (GitHub Packages)
 # Workflow ini akan otomatis berjalan ketika ada push ke branch master
 name: Publish to Maven Repository
 
@@ -7,14 +7,12 @@ on:
     branches:
       - master
 
-env:
-  MAVEN_REPO_URL: https://repo.dlands.me/snapshots
-
 jobs:
   publish:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      packages: write
     
     steps:
     - name: Checkout code
@@ -26,18 +24,10 @@ jobs:
         java-version: '21'
         distribution: 'temurin'
         cache: 'maven'
+        server-id: github
+        settings-path: ${{ github.workspace }}
         
-    - name: Configure Maven settings
-      uses: s4u/maven-settings-action@v3.0.0
-      with:
-        servers: '[{"id": "rendangmc-repo", "username": "${env.MAVEN_USERNAME}", "password": "${env.MAVEN_PASSWORD}"}]'
-          
-    - name: Build and Deploy to Maven Repository
-      run: mvn -B clean deploy --file pom.xml
+    - name: Build and Deploy to GitHub Packages
+      run: mvn -B clean deploy --file pom.xml -s $GITHUB_WORKSPACE/settings.xml
       env:
-        MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
-        MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
-
-# Secrets yang diperlukan (harus dikonfigurasi di GitHub Settings > Secrets and variables > Actions):
-# - MAVEN_USERNAME: Username untuk autentikasi ke Maven repository
-# - MAVEN_PASSWORD: Password/token untuk autentikasi ke Maven repository
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

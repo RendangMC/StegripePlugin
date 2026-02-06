@@ -28,8 +28,8 @@
 
     <distributionManagement>
         <snapshotRepository>
-            <id>rendangmc-repo</id>
-            <url>${env.MAVEN_REPO_URL}</url>
+            <id>github</id>
+            <url>https://maven.pkg.github.com/RendangMC/StegripePlugin</url>
         </snapshotRepository>
     </distributionManagement>
 </project>
