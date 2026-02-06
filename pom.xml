@@ -29,7 +29,7 @@
     <distributionManagement>
         <snapshotRepository>
             <id>rendangmc-repo</id>
-            <url>https://repo.minekarta.com/snapshots</url>
+            <url>${env.MAVEN_REPO_URL}</url>
         </snapshotRepository>
     </distributionManagement>
 </project>
