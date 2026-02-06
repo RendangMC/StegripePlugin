@@ -30,10 +30,13 @@ jobs:
     - name: Configure Maven settings
       uses: s4u/maven-settings-action@v3.0.0
       with:
-        servers: '[{"id": "rendangmc-repo", "username": "${{ secrets.MAVEN_USERNAME }}", "password": "${{ secrets.MAVEN_PASSWORD }}"}]'
+        servers: '[{"id": "rendangmc-repo", "username": "${env.MAVEN_USERNAME}", "password": "${env.MAVEN_PASSWORD}"}]'
           
     - name: Build and Deploy to Maven Repository
       run: mvn -B clean deploy --file pom.xml
+      env:
+        MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
+        MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
 
 # Secrets yang diperlukan (harus dikonfigurasi di GitHub Settings > Secrets and variables > Actions):
 # - MAVEN_USERNAME: Username untuk autentikasi ke Maven repository
