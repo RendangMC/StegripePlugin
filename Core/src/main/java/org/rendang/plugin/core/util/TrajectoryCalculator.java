@@ -170,7 +170,7 @@ public class TrajectoryCalculator {
      * @return Estimated velocity in blocks per tick (minimum 1.0 to ensure noticeable movement)
      */
     private static double estimateVelocityFromDistance(double horizontalDistance) {
-        // Estimate time based on distance (assuming time scales with sqrt of distance)
+        // Estimate time using sqrt scaling heuristic (see method javadoc for rationale)
         double estimatedTime = Math.sqrt(horizontalDistance) * TIME_ESTIMATION_FACTOR;
         // Ensure minimum velocity of 1.0 blocks/tick for noticeable player movement
         return Math.max(horizontalDistance / estimatedTime, 1.0);
@@ -212,7 +212,8 @@ public class TrajectoryCalculator {
         
         // Calculate vertical velocity using kinematic equation: deltaY = v_y * t - 0.5 * g * t²
         // In Minecraft, gravity acts downward at GRAVITY blocks/tick², reducing Y velocity each tick
-        // Solving for v_y: v_y = (deltaY + 0.5 * g * t²) / t
+        // Solving for v_y: v_y = (deltaY + 0.5 * GRAVITY * t²) / t
+        // where GRAVITY is positive representing downward acceleration magnitude
         // We ADD (0.5 * g * t²) because we need to counteract the downward acceleration
         double velocityY = (deltaY + 0.5 * GRAVITY * timeInTicks * timeInTicks) / timeInTicks;
         
