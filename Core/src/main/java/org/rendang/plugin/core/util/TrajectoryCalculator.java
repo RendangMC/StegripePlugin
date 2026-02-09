@@ -159,14 +159,20 @@ public class TrajectoryCalculator {
 
     /**
      * Estimates a reasonable velocity based on horizontal distance.
-     * Uses a simplified time-of-flight approach assuming the time scales with square root of distance.
+     * Uses a simplified time-of-flight approach.
+     * 
+     * The time estimation uses sqrt(distance) scaling as a heuristic that provides reasonable
+     * results for typical Minecraft trajectories. The square root scaling means closer targets
+     * are reached quickly while distant targets take proportionally less additional time,
+     * preventing extremely high velocities for long distances.
      * 
      * @param horizontalDistance The horizontal distance to the target
-     * @return Estimated velocity in blocks per tick
+     * @return Estimated velocity in blocks per tick (minimum 1.0 to ensure noticeable movement)
      */
     private static double estimateVelocityFromDistance(double horizontalDistance) {
         // Estimate time based on distance (assuming time scales with sqrt of distance)
         double estimatedTime = Math.sqrt(horizontalDistance) * TIME_ESTIMATION_FACTOR;
+        // Ensure minimum velocity of 1.0 blocks/tick for noticeable player movement
         return Math.max(horizontalDistance / estimatedTime, 1.0);
     }
 
@@ -204,9 +210,10 @@ public class TrajectoryCalculator {
         double velocityX = deltaX / timeInTicks;
         double velocityZ = deltaZ / timeInTicks;
         
-        // Calculate vertical velocity using: deltaY = v_y * t - 0.5 * g * t²
+        // Calculate vertical velocity using kinematic equation: deltaY = v_y * t - 0.5 * g * t²
+        // In Minecraft, gravity acts downward at GRAVITY blocks/tick², reducing Y velocity each tick
         // Solving for v_y: v_y = (deltaY + 0.5 * g * t²) / t
-        // Since gravity pulls down, we add it to compensate for the downward acceleration
+        // We ADD (0.5 * g * t²) because we need to counteract the downward acceleration
         double velocityY = (deltaY + 0.5 * GRAVITY * timeInTicks * timeInTicks) / timeInTicks;
         
         return new Vector(velocityX, velocityY, velocityZ);

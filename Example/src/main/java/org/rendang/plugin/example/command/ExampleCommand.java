@@ -62,15 +62,17 @@ public class ExampleCommand implements RendangCommand {
 
     @CommandExecute(command = "launch", usages = "", description = "Launch player to target block")
     public boolean launch(CommandEvent event) {
+        var messages = plugin.getPluginMessages();
+        
         if (!(event.getSender() instanceof Player player)) {
-            event.getSender().sendMessage("This command can only be used by a player!");
+            event.getSender().sendMessage(messages.parse(ExampleMessageType.LAUNCH_PLAYER_ONLY));
             return false;
         }
 
         // Get the block the player is looking at
         Block targetBlock = player.getTargetBlockExact(100);
         if (targetBlock == null) {
-            player.sendMessage("You must be looking at a block!");
+            player.sendMessage(messages.parse(ExampleMessageType.LAUNCH_NO_TARGET));
             return false;
         }
 
@@ -78,13 +80,13 @@ public class ExampleCommand implements RendangCommand {
         Vector velocity = TrajectoryCalculator.calculateForce(player, targetBlock);
         
         if (velocity == null) {
-            player.sendMessage("Cannot calculate trajectory to that location!");
+            player.sendMessage(messages.parse(ExampleMessageType.LAUNCH_NO_TRAJECTORY));
             return false;
         }
 
         // Apply the velocity to launch the player
         player.setVelocity(velocity);
-        player.sendMessage("Launching you to the target block!");
+        player.sendMessage(messages.parse(ExampleMessageType.LAUNCH_SUCCESS));
         
         return true;
     }
