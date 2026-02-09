@@ -38,14 +38,14 @@ jobs:
         fi
         
         # Remove any existing suffix (like -SNAPSHOT) and 'b' suffix if preceded by a digit
-        BASE_VERSION=$(echo $CURRENT_VERSION | sed 's/-SNAPSHOT$//' | sed 's/\([0-9]\)b$/\1/')
+        BASE_VERSION=$(echo "$CURRENT_VERSION" | sed 's/-SNAPSHOT$//' | sed 's/\([0-9]\)b$/\1/')
         
         # Append 'b' suffix for dev branch
         NEW_VERSION="${BASE_VERSION}b"
         echo "Changing version from $CURRENT_VERSION to $NEW_VERSION for dev branch"
         
         # Update version in all POMs
-        mvn versions:set -DnewVersion=$NEW_VERSION -DgenerateBackupPoms=false
+        mvn versions:set -DnewVersion="$NEW_VERSION" -DgenerateBackupPoms=false
         
     - name: Build and Deploy to Maven Repository
       run: mvn -B clean deploy --file pom.xml -s $GITHUB_WORKSPACE/settings.xml
