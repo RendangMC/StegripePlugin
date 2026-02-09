@@ -18,6 +18,21 @@ public class TrajectoryCalculator {
     private static final double GRAVITY = 0.08;
 
     /**
+     * Default launch angle in degrees when optimal angle calculation fails
+     */
+    private static final double FALLBACK_LAUNCH_ANGLE_DEGREES = 50.0;
+
+    /**
+     * Threshold for considering a target significantly lower (in blocks)
+     */
+    private static final double STEEP_DESCENT_THRESHOLD = -5.0;
+
+    /**
+     * Factor used in time estimation for fallback velocity calculation
+     */
+    private static final double TIME_ESTIMATION_FACTOR = 2.0;
+
+    /**
      * Calculates the velocity vector needed to launch a player to land at the center-top of a target block.
      * 
      * @param player The player to be launched
@@ -59,8 +74,8 @@ public class TrajectoryCalculator {
         double bestAngle = findBestLaunchAngle(horizontalDistance, deltaY);
         
         if (Double.isNaN(bestAngle)) {
-            // If no valid angle found, use a high arc (45 degrees + offset)
-            bestAngle = Math.toRadians(50);
+            // If no valid angle found, use a high arc
+            bestAngle = Math.toRadians(FALLBACK_LAUNCH_ANGLE_DEGREES);
         }
         
         // Calculate initial velocity magnitude needed for the trajectory
@@ -98,7 +113,7 @@ public class TrajectoryCalculator {
         if (deltaY > 0) {
             // Target is higher, use a steeper angle
             baseAngle = Math.toRadians(60);
-        } else if (deltaY < -5) {
+        } else if (deltaY < STEEP_DESCENT_THRESHOLD) {
             // Target is much lower, use a shallower angle
             baseAngle = Math.toRadians(30);
         }
@@ -129,22 +144,30 @@ public class TrajectoryCalculator {
         
         // Check if the trajectory is possible with this angle
         if (denominator <= 0 || Double.isInfinite(denominator)) {
-            // Use a simpler approach based on the distance
-            // Estimate velocity based on horizontal distance and a reasonable time of flight
-            double estimatedTime = Math.sqrt(horizontalDistance) * 2;
-            return Math.max(horizontalDistance / estimatedTime, 1.0);
+            return estimateVelocityFromDistance(horizontalDistance);
         }
         
         double velocitySquared = numerator / denominator;
         
         // Ensure velocity is positive and reasonable
         if (velocitySquared < 0 || Double.isNaN(velocitySquared)) {
-            // Fallback: estimate based on horizontal distance
-            double estimatedTime = Math.sqrt(horizontalDistance) * 2;
-            return Math.max(horizontalDistance / estimatedTime, 1.0);
+            return estimateVelocityFromDistance(horizontalDistance);
         }
         
         return Math.sqrt(velocitySquared);
+    }
+
+    /**
+     * Estimates a reasonable velocity based on horizontal distance.
+     * Uses a simplified time-of-flight approach assuming the time scales with square root of distance.
+     * 
+     * @param horizontalDistance The horizontal distance to the target
+     * @return Estimated velocity in blocks per tick
+     */
+    private static double estimateVelocityFromDistance(double horizontalDistance) {
+        // Estimate time based on distance (assuming time scales with sqrt of distance)
+        double estimatedTime = Math.sqrt(horizontalDistance) * TIME_ESTIMATION_FACTOR;
+        return Math.max(horizontalDistance / estimatedTime, 1.0);
     }
 
     /**
