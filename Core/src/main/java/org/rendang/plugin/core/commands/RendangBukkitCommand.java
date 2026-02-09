@@ -115,7 +115,7 @@ public class RendangBukkitCommand extends Command implements TabCompleter, Comma
         } else {
             String rootCommand = args[0];
             if(!executor.containsKey(rootCommand)){
-                sender.sendMessage("This command is not found. Please use /ce help to see all commands.");
+                sender.sendMessage("This command is not found. Please use /" + rendangCommand.getCommandName() + " help to see all commands.");
                 return true;
             }
             CommandExecute commandExecute = executor.get(rootCommand).method.getAnnotation(CommandExecute.class);
@@ -128,10 +128,10 @@ public class RendangBukkitCommand extends Command implements TabCompleter, Comma
                 Execution execution = executor.get(rootCommand);
                 return (boolean) executor.get(rootCommand).method.invoke(execution.context, event);
             } catch (IndexOutOfBoundsException exception) {
-                sender.sendMessage("This command format is not valid. Please use /ce help to more info.");
+                sender.sendMessage("This command format is not valid. Please use /" + rendangCommand.getCommandName() + " help for more info.");
                 //exception.printStackTrace();
             } catch (Exception e) {
-                sender.sendMessage("This command is invalid. Please use /ce help to see all commands.");
+                sender.sendMessage("This command is invalid. Please use /" + rendangCommand.getCommandName() + " help to see all commands.");
                 e.printStackTrace();
             }
         }
