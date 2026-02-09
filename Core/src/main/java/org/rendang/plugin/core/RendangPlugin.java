@@ -41,7 +41,7 @@ public abstract class RendangPlugin< C extends RendangConfig, M extends RendangM
     }
 
     public void registerCommand(RendangCommand rendangCommand){
-        getCommand(rendangCommand.getCommandName()).setExecutor(new RendangBukkitCommand(rendangCommand));
+        getServer().getCommandMap().register(getName().toLowerCase(), new RendangBukkitCommand(rendangCommand));
     }
 
 }
