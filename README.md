@@ -10,6 +10,7 @@ This is a framework to build plugins that contain auto-generated configuration, 
 - **Message System**: Built-in message configuration system with parameter support
 - **Command Framework**: Simplified command registration and handling with auto-completion
 - **Thread-Safe Scheduling**: Folia-aware scheduler that works seamlessly on both Paper and Folia servers
+- **Cooldown Management**: Simple HashSet-based cooldown system for tracking cooldowns without real-time monitoring
 
 ## Requirements
 
@@ -83,6 +84,36 @@ scheduler.runTaskLater(() -> {
     // Delayed code
 }, 20L); // 20 ticks = 1 second
 ```
+
+## Cooldown System
+
+The framework provides a simple `RendangCooldown` class that uses HashSet for efficient cooldown tracking without real-time monitoring:
+
+```java
+import org.rendang.plugin.core.cooldown.RendangCooldown;
+import java.util.UUID;
+
+// Create a cooldown manager for player UUIDs
+RendangCooldown<UUID> cooldown = new RendangCooldown<>(plugin.getScheduler());
+
+// Add a player to cooldown for 5 seconds (100 ticks)
+UUID playerId = player.getUniqueId();
+cooldown.add(playerId, 100L);
+
+// Check if a player is on cooldown
+if (cooldown.isOnCooldown(playerId)) {
+    player.sendMessage("You are on cooldown!");
+    return;
+}
+
+// Manually remove a player from cooldown
+cooldown.remove(playerId);
+
+// Clear all cooldowns
+cooldown.clear();
+```
+
+The cooldown system automatically removes entries after the specified time using the scheduler, making it memory-efficient and simple to use.
 
 ## Plugin Configuration
 
