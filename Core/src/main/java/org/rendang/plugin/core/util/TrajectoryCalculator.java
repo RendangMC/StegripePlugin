@@ -13,7 +13,7 @@ public class TrajectoryCalculator {
 
     /**
      * Gravity constant in Minecraft (blocks per tick squared).
-     * Standard Minecraft gravity is approximately -0.08 blocks/tick²
+     * Standard Minecraft gravity is 0.08 blocks/tick² downward (positive value used in calculations)
      */
     private static final double GRAVITY = 0.08;
 
@@ -109,8 +109,8 @@ public class TrajectoryCalculator {
     /**
      * Calculates the initial velocity magnitude needed for a projectile to reach a target.
      * Uses the projectile motion equation:
-     * R = (v² * sin(2θ)) / g  (horizontal range)
-     * H = (v² * sin²(θ)) / (2g) (max height)
+     * y = x*tan(θ) - (g*x²)/(2*v²*cos²(θ))
+     * Solving for v: v² = (g*x²)/(2*cos²(θ)*(x*tan(θ) - y))
      * 
      * @param horizontalDistance The horizontal distance to the target
      * @param deltaY The vertical distance to the target
@@ -127,17 +127,21 @@ public class TrajectoryCalculator {
         double numerator = GRAVITY * horizontalDistance * horizontalDistance;
         double denominator = 2 * cosAngle * cosAngle * (horizontalDistance * tanAngle - deltaY);
         
-        // Prevent division by zero or negative values
-        if (denominator <= 0) {
-            // Fallback calculation using energy consideration
-            return Math.sqrt(2 * GRAVITY * (horizontalDistance + Math.abs(deltaY)));
+        // Check if the trajectory is possible with this angle
+        if (denominator <= 0 || Double.isInfinite(denominator)) {
+            // Use a simpler approach based on the distance
+            // Estimate velocity based on horizontal distance and a reasonable time of flight
+            double estimatedTime = Math.sqrt(horizontalDistance) * 2;
+            return Math.max(horizontalDistance / estimatedTime, 1.0);
         }
         
         double velocitySquared = numerator / denominator;
         
-        // Ensure velocity is positive
-        if (velocitySquared < 0) {
-            return Math.sqrt(GRAVITY * horizontalDistance);
+        // Ensure velocity is positive and reasonable
+        if (velocitySquared < 0 || Double.isNaN(velocitySquared)) {
+            // Fallback: estimate based on horizontal distance
+            double estimatedTime = Math.sqrt(horizontalDistance) * 2;
+            return Math.max(horizontalDistance / estimatedTime, 1.0);
         }
         
         return Math.sqrt(velocitySquared);
@@ -168,20 +172,19 @@ public class TrajectoryCalculator {
      * @return The velocity vector to apply
      */
     public static Vector calculateForceWithTime(Location from, Location to, int timeInTicks) {
-        double time = timeInTicks; // Time in ticks
-        
         // Calculate displacement
         double deltaX = to.getX() - from.getX();
         double deltaY = to.getY() - from.getY();
         double deltaZ = to.getZ() - from.getZ();
         
         // Calculate horizontal velocities (constant velocity)
-        double velocityX = deltaX / time;
-        double velocityZ = deltaZ / time;
+        double velocityX = deltaX / timeInTicks;
+        double velocityZ = deltaZ / timeInTicks;
         
         // Calculate vertical velocity using: deltaY = v_y * t - 0.5 * g * t²
         // Solving for v_y: v_y = (deltaY + 0.5 * g * t²) / t
-        double velocityY = (deltaY + 0.5 * GRAVITY * time * time) / time;
+        // Since gravity pulls down, we add it to compensate for the downward acceleration
+        double velocityY = (deltaY + 0.5 * GRAVITY * timeInTicks * timeInTicks) / timeInTicks;
         
         return new Vector(velocityX, velocityY, velocityZ);
     }
