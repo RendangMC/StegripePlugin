@@ -62,7 +62,8 @@ public class RendangBukkitCommand extends Command implements TabCompleter, Comma
 
     @Override
     public List<String> tabComplete(CommandSender sender, String alias, String[] args) {
-        return onTabComplete(sender, this, alias, args);
+        List<String> result = onTabComplete(sender, this, alias, args);
+        return result != null ? result : Collections.emptyList();
     }
 
     @CommandExecute(command = "help", usages = "<page>", description = "Shows all commands")
