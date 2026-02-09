@@ -30,9 +30,20 @@ jobs:
       run: |
         # Get current version from parent POM
         CURRENT_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+        
+        # Check if version was extracted successfully
+        if [ -z "$CURRENT_VERSION" ]; then
+          echo "Error: Failed to extract current version"
+          exit 1
+        fi
+        
+        # Remove any existing suffix (like -SNAPSHOT) before appending 'b'
+        BASE_VERSION=$(echo $CURRENT_VERSION | sed 's/-SNAPSHOT$//' | sed 's/b$//')
+        
         # Append 'b' suffix for dev branch
-        NEW_VERSION="${CURRENT_VERSION}b"
+        NEW_VERSION="${BASE_VERSION}b"
         echo "Changing version from $CURRENT_VERSION to $NEW_VERSION for dev branch"
+        
         # Update version in all POMs
         mvn versions:set -DnewVersion=$NEW_VERSION -DgenerateBackupPoms=false
         
