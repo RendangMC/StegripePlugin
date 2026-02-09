@@ -37,8 +37,8 @@ jobs:
           exit 1
         fi
         
-        # Remove any existing suffix (like -SNAPSHOT) before appending 'b'
-        BASE_VERSION=$(echo $CURRENT_VERSION | sed 's/-SNAPSHOT$//' | sed 's/b$//')
+        # Remove any existing suffix (like -SNAPSHOT) and 'b' suffix if preceded by a digit
+        BASE_VERSION=$(echo $CURRENT_VERSION | sed 's/-SNAPSHOT$//' | sed 's/\([0-9]\)b$/\1/')
         
         # Append 'b' suffix for dev branch
         NEW_VERSION="${BASE_VERSION}b"
