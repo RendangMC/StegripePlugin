@@ -2,9 +2,7 @@ package org.rendang.plugin.core.cooldown;
 
 import org.rendang.plugin.core.scheduler.RendangScheduler;
 
-import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
