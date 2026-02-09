@@ -38,7 +38,7 @@ Add the following repository and dependency to your `pom.xml`:
 <dependency>
   <groupId>org.rendang.plugin</groupId>
   <artifactId>rendang-plugin-core</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>2.0.1</version>
 </dependency>
 ```
 
