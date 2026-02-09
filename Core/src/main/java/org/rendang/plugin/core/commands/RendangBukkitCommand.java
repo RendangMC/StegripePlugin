@@ -11,12 +11,13 @@ import org.rendang.plugin.core.commands.event.CommandEvent;
 import java.lang.reflect.Method;
 import java.util.*;
 
-public class RendangBukkitCommand implements TabCompleter, CommandExecutor {
+public class RendangBukkitCommand extends Command implements TabCompleter, CommandExecutor {
     final HashMap<String, Execution> executor = new HashMap<>();
     final HashMap<String, Execution> completor = new HashMap<>();
     final RendangCommand rendangCommand;
 
     public RendangBukkitCommand(RendangCommand RendangCommand) {
+        super(RendangCommand.getCommandName());
         this.rendangCommand = RendangCommand;
         Class<RendangBukkitCommand> commandsInstanceClass = RendangBukkitCommand.class;
         for (Method method : commandsInstanceClass.getDeclaredMethods()) {
@@ -52,6 +53,16 @@ public class RendangBukkitCommand implements TabCompleter, CommandExecutor {
             }
             execution.method.setAccessible(true);
         }
+    }
+
+    @Override
+    public boolean execute(CommandSender sender, String commandLabel, String[] args) {
+        return onCommand(sender, this, commandLabel, args);
+    }
+
+    @Override
+    public List<String> tabComplete(CommandSender sender, String alias, String[] args) {
+        return onTabComplete(sender, this, alias, args);
     }
 
     @CommandExecute(command = "help", usages = "<page>", description = "Shows all commands")
