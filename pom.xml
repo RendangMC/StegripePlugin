@@ -27,6 +27,10 @@
     </repositories>
 
     <distributionManagement>
+        <repository>
+            <id>rendangmc-repo</id>
+            <url>${env.MAVEN_REPO_URL}</url>
+        </repository>
         <snapshotRepository>
             <id>rendangmc-repo</id>
             <url>${env.MAVEN_REPO_URL}</url>
