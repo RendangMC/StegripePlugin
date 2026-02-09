@@ -11,12 +11,13 @@ import org.rendang.plugin.core.commands.event.CommandEvent;
 import java.lang.reflect.Method;
 import java.util.*;
 
-public class RendangBukkitCommand implements TabCompleter, CommandExecutor {
+public class RendangBukkitCommand extends Command implements TabCompleter, CommandExecutor {
     final HashMap<String, Execution> executor = new HashMap<>();
     final HashMap<String, Execution> completor = new HashMap<>();
     final RendangCommand rendangCommand;
 
     public RendangBukkitCommand(RendangCommand RendangCommand) {
+        super(RendangCommand.getCommandName());
         this.rendangCommand = RendangCommand;
         Class<RendangBukkitCommand> commandsInstanceClass = RendangBukkitCommand.class;
         for (Method method : commandsInstanceClass.getDeclaredMethods()) {
@@ -52,6 +53,17 @@ public class RendangBukkitCommand implements TabCompleter, CommandExecutor {
             }
             execution.method.setAccessible(true);
         }
+    }
+
+    @Override
+    public boolean execute(CommandSender sender, String commandLabel, String[] args) {
+        return onCommand(sender, this, commandLabel, args);
+    }
+
+    @Override
+    public List<String> tabComplete(CommandSender sender, String alias, String[] args) {
+        List<String> result = onTabComplete(sender, this, alias, args);
+        return result != null ? result : Collections.emptyList();
     }
 
     @CommandExecute(command = "help", usages = "<page>", description = "Shows all commands")
@@ -103,7 +115,7 @@ public class RendangBukkitCommand implements TabCompleter, CommandExecutor {
         } else {
             String rootCommand = args[0];
             if(!executor.containsKey(rootCommand)){
-                sender.sendMessage("This command is not found. Please use /ce help to see all commands.");
+                sender.sendMessage("This command is not found. Please use /" + rendangCommand.getCommandName() + " help to see all commands.");
                 return true;
             }
             CommandExecute commandExecute = executor.get(rootCommand).method.getAnnotation(CommandExecute.class);
@@ -116,10 +128,10 @@ public class RendangBukkitCommand implements TabCompleter, CommandExecutor {
                 Execution execution = executor.get(rootCommand);
                 return (boolean) executor.get(rootCommand).method.invoke(execution.context, event);
             } catch (IndexOutOfBoundsException exception) {
-                sender.sendMessage("This command format is not valid. Please use /ce help to more info.");
+                sender.sendMessage("This command format is not valid. Please use /" + rendangCommand.getCommandName() + " help for more info.");
                 //exception.printStackTrace();
             } catch (Exception e) {
-                sender.sendMessage("This command is invalid. Please use /ce help to see all commands.");
+                sender.sendMessage("This command is invalid. Please use /" + rendangCommand.getCommandName() + " help to see all commands.");
                 e.printStackTrace();
             }
         }
